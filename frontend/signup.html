@@ -42,40 +42,40 @@
 
   <!-- Signup Script -->
   <script>
-    document.getElementById("signupForm").addEventListener("submit", async function (e) {
-      e.preventDefault(); // Stop page reload
+  const API_BASE = "https://book-recommendation-1-48xw.onrender.com";
 
-      // Collect user data
-      const user = {
-        name: document.getElementById("name").value,
-        email: document.getElementById("email").value,
-        password: document.getElementById("password").value
-      };
+  document.getElementById("signupForm").addEventListener("submit", async function (e) {
+    e.preventDefault();
 
-      try {
-        const response = await fetch("http://localhost:8080/api/auth/signup", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json"
-          },
-          body: JSON.stringify(user)
-        });
+    const user = {
+      name: document.getElementById("name").value,
+      email: document.getElementById("email").value,
+      password: document.getElementById("password").value
+    };
 
-        const result = await response.json();
+    try {
+      const response = await fetch(`${API_BASE}/api/auth/signup`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(user)
+      });
 
-        if (response.ok) {
-          alert("Signup successful! Please login now.");
-          window.location.href = "login.html";
-        } else {
-          alert(result.message || "Signup failed. Email may already exist.");
-        }
+      const result = await response.json();
 
-      } catch (error) {
-        alert("Error connecting to server.");
-        console.error(error);
+      if (response.ok) {
+        alert("Signup successful! Please login now.");
+        window.location.href = "login.html";
+      } else {
+        alert(result.message || "Signup failed.");
       }
-    });
-  </script>
+
+    } catch (error) {
+      alert("Error connecting to server.");
+      console.error(error);
+    }
+  });
+</script>
+
 
 </body>
 </html>

@@ -1,3 +1,5 @@
+const API_BASE = "https://book-recommendation-1-48xw.onrender.com";
+
 // --- BOOK DATA ---
 const featured_books = [
   { 
@@ -306,6 +308,7 @@ const toast = document.getElementById("toast");
 const toTop = document.getElementById("to-top");
 const personalSection = document.getElementById("personal-section");
 
+
 // --- UTILITIES ---
 function showToast(msg) {
   if (!toast) return;
@@ -421,7 +424,7 @@ async function fetchBooksBySubCategory(subCategory) {
   if (!searchResults || !searchSection) return;
   try {
     renderSkeletons(searchResults);
-    const response = await fetch(`http://localhost:8080/api/books/search?keyword=${encodeURIComponent(subCategory)}`);
+    const response = await fetch(`${API_BASE}/api/books/search?keyword=${encodeURIComponent(subCategory)}`);
     if (!response.ok) throw new Error("Network error");
     const data = await response.json();
     if (!data || data.length === 0) {
@@ -460,7 +463,7 @@ if (mainFilters) {
 async function searchBooks(query) {
   if (!query) return [];
   try {
-    const response = await fetch(`http://localhost:8080/api/books/search?keyword=${encodeURIComponent(query)}`);
+    const response = await fetch(`${API_BASE}/api/books/search?keyword=${encodeURIComponent(query)}`);
     if (!response.ok) throw new Error("Network response was not ok");
     const results = await response.json();
     return results;
@@ -604,11 +607,15 @@ if (saveBtn) saveBtn.addEventListener("click", async () => {
   }
 
   try {
-    const response = await fetch(`http://localhost:8080/api/user/${user.id}/preferences`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(selectedGenres)
-    });
+  const response = await fetch(
+  `${API_BASE}/api/user/${user.id}/preferences`,
+  {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(selectedGenres)
+  }
+);
+
 
     if (response.ok) {
       alert("Preferences saved!");
@@ -651,7 +658,10 @@ async function loadPersonalizedBooks() {
   personalBooks.innerHTML = `<p style="color:var(--muted); padding: 12px">Loading personalized picks...</p>`;
 
   try {
-    const res = await fetch(`http://localhost:8080/api/recommend/user/${localUser.id}`);
+  const res = await fetch(
+  `${API_BASE}/api/recommend/user/${localUser.id}`
+);
+
     if (!res.ok) {
       // if backend returns all books when no genres present, we still have savedGenres so it's likely okay.
       throw new Error("Failed to fetch recommendations");

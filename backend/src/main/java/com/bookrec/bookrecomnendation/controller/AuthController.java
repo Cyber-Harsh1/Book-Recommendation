@@ -4,9 +4,17 @@ import com.bookrec.bookrecomnendation.model.User;
 import com.bookrec.bookrecomnendation.service.UserService;
 import org.springframework.web.bind.annotation.*;
 
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import java.util.Map;
+
+
 @RestController
 @RequestMapping("/api/auth")
-@CrossOrigin(origins = "book-recommendation-7r8lpnmdo-cyber-harsh1s-projects.vercel.app")
+@CrossOrigin(origins = "https://book-recommendation-7r8lpnmdo-cyber-harsh1s-projects.vercel.app",
+        allowedHeaders = "*",
+        methods = {RequestMethod.GET, RequestMethod.POST, RequestMethod.PUT, RequestMethod.DELETE, RequestMethod.OPTIONS},
+        allowCredentials = "true")
 public class AuthController {
 
     private final UserService service;
@@ -17,28 +25,32 @@ public class AuthController {
 
     // ---------------- SIGN UP ----------------
     @PostMapping("/signup")
-    public Object signup(@RequestBody User user) {
+    public ResponseEntity<?> signup(@RequestBody User user) {
 
         User saved = service.registerUser(user);
 
         if (saved == null) {
-            return "Email already exists!";
+            return ResponseEntity
+                    .status(HttpStatus.CONFLICT)
+                    .body(Map.of("message", "Email already exists"));
         }
 
-        return saved;  // returns created user (excluding password)
+        return ResponseEntity.ok(saved);
     }
 
 
     // ---------------- LOGIN ----------------
     @PostMapping("/login")
-    public Object login(@RequestBody User user) {
+    public ResponseEntity<?> login(@RequestBody User user) {
 
         User loggedIn = service.login(user.getEmail(), user.getPassword());
 
         if (loggedIn == null) {
-            return "Invalid email or password";
+            return ResponseEntity
+                    .status(HttpStatus.UNAUTHORIZED)
+                    .body(Map.of("message", "Invalid email or password"));
         }
 
-        return loggedIn;  // sends user info to frontend
+        return ResponseEntity.ok(loggedIn);
     }
 }

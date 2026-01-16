@@ -11,10 +11,7 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("/api/auth")
-@CrossOrigin(origins = "https://book-recommendation-7r8lpnmdo-cyber-harsh1s-projects.vercel.app",
-        allowedHeaders = "*",
-        methods = {RequestMethod.GET, RequestMethod.POST, RequestMethod.PUT, RequestMethod.DELETE, RequestMethod.OPTIONS},
-        allowCredentials = "true")
+
 public class AuthController {
 
     private final UserService service;

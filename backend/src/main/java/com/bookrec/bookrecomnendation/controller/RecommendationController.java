@@ -8,7 +8,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/recommend")
-@CrossOrigin(origins = "*")
+@CrossOrigin(origins = "book-recommendation-7r8lpnmdo-cyber-harsh1s-projects.vercel.app")
 public class RecommendationController {
 
     private final RecommendationService service;

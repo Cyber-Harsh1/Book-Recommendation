@@ -8,7 +8,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/user")
-@CrossOrigin(origins = "*")
+@CrossOrigin(origins = "book-recommendation-7r8lpnmdo-cyber-harsh1s-projects.vercel.app")
 public class UserPreferenceController {
 
     private final UserRepository userRepo;

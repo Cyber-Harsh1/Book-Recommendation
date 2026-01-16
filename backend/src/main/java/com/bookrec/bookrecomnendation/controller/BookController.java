@@ -7,7 +7,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/books")
-@CrossOrigin(origins = "*") // allows frontend (JS) to call backend
+@CrossOrigin(origins = "book-recommendation-7r8lpnmdo-cyber-harsh1s-projects.vercel.app") // allows frontend (JS) to call backend
 public class BookController {
 
     private final BookRepository repo;

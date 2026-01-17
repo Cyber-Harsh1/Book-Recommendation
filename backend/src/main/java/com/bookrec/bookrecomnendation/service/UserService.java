@@ -2,36 +2,41 @@ package com.bookrec.bookrecomnendation.service;
 
 import com.bookrec.bookrecomnendation.model.User;
 import com.bookrec.bookrecomnendation.repository.UserRepository;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
 public class UserService {
 
     private final UserRepository repo;
-    private final BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
 
     public UserService(UserRepository repo) {
         this.repo = repo;
     }
 
-    // SIGNUP
+    // ---------------- SIGNUP ----------------
     public User registerUser(User user) {
 
         if (repo.findByEmail(user.getEmail()) != null) {
-            return null; // email already exists
+            return null;
         }
 
-        user.setPassword(encoder.encode(user.getPassword()));
-        return repo.save(user);
+        User saved = repo.save(user);
+
+        saved.setPassword(null); // never send password
+        return saved;
     }
 
-    // LOGIN
+    // ---------------- LOGIN ----------------
     public User login(String email, String password) {
 
         User user = repo.findByEmail(email);
 
-        if (user != null && encoder.matches(password, user.getPassword())) {
+        if (user == null) {
+            return null;
+        }
+
+        if (user.getPassword().equals(password)) {
+            user.setPassword(null);
             return user;
         }
 
